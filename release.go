@@ -37,6 +37,11 @@ func init() {
 
 func Check() bool {
 	releaseVersion := manifest()
+	if releaseVersion == nil {
+		// JSON fetch failed - 404?
+		return false
+	}
+
 	if currentVersion.SHA256 == releaseVersion.SHA256 {
 		Debug("%s v%s (%s) - latest", currentVersion.ExecPath, releaseVersion.Version, releaseVersion.SHA256)
 		return false
