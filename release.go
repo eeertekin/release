@@ -81,19 +81,17 @@ func GetHead(repo, release string) *Version {
 	return &v
 }
 
-func Install(repo, release string) {
+func Install(repo, release string) string {
 	v := GetHead(repo, release)
 	if v == nil {
-		fmt.Printf("[%s] Manifest not found\n", repo)
-		return
+		return fmt.Sprintf("[%s] Manifest not found\n", repo)
 	}
 	v.ExecPath = "/bin/" + v.Name
 	v.Repo = repo
 
 	if err := v.Deploy(); err != nil {
-		fmt.Printf("[%s] %s\n", v.Name, err)
-		return
+		return fmt.Sprintf("[%s] %s\n", v.Name, err)
 	}
 
-	fmt.Printf("[%s] Install completed\n", v.Name)
+	return fmt.Sprintf("[%s] Install completed\n", v.Name)
 }
