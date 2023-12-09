@@ -2,6 +2,7 @@ package release
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 )
@@ -78,4 +79,21 @@ func GetHead(repo, release string) *Version {
 	}
 
 	return &v
+}
+
+func Install(repo, release string) {
+	v := GetHead(repo, release)
+	if v == nil {
+		fmt.Printf("[%s] Manifest not found\n", repo)
+		return
+	}
+	v.ExecPath = "/bin/" + v.Name
+	v.Repo = repo
+
+	if err := v.Deploy(); err != nil {
+		fmt.Printf("[%s] %s\n", v.Name, err)
+		return
+	}
+
+	fmt.Printf("[%s] Install completed\n", v.Name)
 }
