@@ -6,6 +6,7 @@ import (
 	"io"
 	"math"
 	"math/rand"
+	"net/http"
 	"os"
 	"time"
 )
@@ -32,9 +33,18 @@ func randomInt() int {
 	return rand.New(s).Intn(math.MaxInt64)
 }
 
-func Debug(format string, args ...any) {
+func verbose(format string, args ...any) {
 	if !Verbose {
 		return
 	}
 	fmt.Printf(format, args...)
+}
+
+func fetch(URL string) (*http.Response, error) {
+	client := http.Client{Timeout: 30 * time.Second}
+	return client.Get(URL)
+}
+
+func GetArtifactURL(repo, file string) string {
+	return fmt.Sprintf("%s/%s/%s?%d", Storage, repo, file, randomInt())
 }
