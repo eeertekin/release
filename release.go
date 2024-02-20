@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"os"
+	"os/exec"
 )
 
 var Repo string
@@ -94,4 +96,23 @@ func Install(repo, release string) string {
 	}
 
 	return fmt.Sprintf("[%s] Install completed\n", v.Name)
+}
+
+func Fork() {
+	cmd := exec.Command(os.Args[0], os.Args[1:]...)
+	cmd.Env = os.Environ()
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Start(); err != nil {
+		log.Printf("[fork] error %s\n", err)
+		os.Exit(1)
+	}
+
+	if err := cmd.Wait(); err != nil {
+		log.Printf("[fork] error %s\n", err)
+		os.Exit(1)
+	}
+
+	os.Exit(0)
 }
