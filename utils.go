@@ -41,8 +41,17 @@ func verbose(format string, args ...any) {
 }
 
 func fetch(URL string) (*http.Response, error) {
-	client := http.Client{Timeout: 30 * time.Second}
-	return client.Get(URL)
+	client := http.Client{
+		Timeout: 30 * time.Second,
+	}
+
+	req, err := http.NewRequest("GET", URL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header = HTTPHeader
+	return client.Do(req)
 }
 
 func GetArtifactURL(repo, file string) string {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
 )
@@ -12,6 +13,7 @@ import (
 var Repo string
 var Release string = "latest"
 var Storage string
+var HTTPHeader http.Header = http.Header{}
 
 var local_version Version
 
@@ -37,7 +39,7 @@ func Update() bool {
 	repo_version.Repo = Repo
 
 	if local_version.SHA256 == repo_version.SHA256 {
-		verbose("%s v%s (%s) - latest", local_version.ExecPath, repo_version.Version, repo_version.SHA256)
+		verbose("%s v%s (%s) - latest\n", local_version.ExecPath, repo_version.Version, repo_version.SHA256)
 		return false
 	}
 
