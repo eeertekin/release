@@ -14,6 +14,7 @@ var Repo string
 var Release string = "latest"
 var Storage string
 var HTTPHeader http.Header = http.Header{}
+var HTTPAuthorization string = ""
 
 var local_version Version
 

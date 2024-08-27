@@ -51,6 +51,9 @@ func fetch(URL string) (*http.Response, error) {
 	}
 
 	req.Header = HTTPHeader
+	if HTTPAuthorization != "" {
+		req.Header.Add("Authorization", HTTPAuthorization)
+	}
 	return client.Do(req)
 }
 
