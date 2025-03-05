@@ -50,9 +50,9 @@ func fetch(URL string) (*http.Response, error) {
 		return nil, err
 	}
 
-	req.Header = HTTPHeader
+	req.Header = HTTPHeader.Clone()
 	if HTTPAuthorization != "" {
-		req.Header.Add("Authorization", HTTPAuthorization)
+		req.Header.Set("Authorization", HTTPAuthorization)
 	}
 	return client.Do(req)
 }
